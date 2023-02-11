@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CROP RECOMMENDER MODEL</title>
+    <style>
+      body{
+        background-color: rgb(81, 111, 69);
+      }
+      table {
+        width: 50%;
+        margin: 0 auto;
+        border-collapse: collapse;
+      }
+
+      td, th {
+        border: 1px solid black;
+        padding: 10px;
+        text-align: left;
+      }
+
+      input[type="text"], button[type="submit"] {
+        padding: 5px;
+        width: 150px;
+      }
+
+      button[type="submit"] {
+        font-size: 40px;
+        margin-top: 20px;
+        margin-left: 100px;
+        background-color: lightblue;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      #predictButton {
+        background-color: black;
+        width: 50%;
+        color: white;
+        border-radius: 10px;
+        font-size: 18px;
+        cursor: pointer;
+        width: 150px;
+        margin: 0 auto;
+        display: block;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-radius: 10px;
+      }
+      #prediction {
+        color: white;
+        width: 50%;
+        margin: 20px auto;
+        text-align: center;
+        font-size: 18px;
+        padding: 20px;
+        background-color: black;
+        border-radius: 10px;
+      }
+      h1 {
+        text-align: center;
+      }
+      .filecontent{
+        color: white;
+        width: 50%;
+        margin: 20px auto;
+        text-align: center;
+        font-size: 18px;
+        padding: 20px;
+        background-color: black;
+        border-radius: 10px;
+      }
+      .image-container{
+          width:40%;
+          position: relative;
+      }
+      .social-links{
+          margin-top: 20px;
+          display: flex;
+          gap: 50px;
+          justify-content: center;
+      }
+
+      .social-img{
+          width: 30px;
+          height: 30px;
+          opacity: .4;
+          transition: .5s;
+      }
+
+      .social-img:hover{
+          opacity: 1;
+      }
+      .footer {
+        position: relative;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: rgb(4, 4, 78);
+        text-align: center;
+        padding: 10px;
+        height: 30%;
+      }
+    </style>
+  </head>
+  <body   >
+    <h1>CROP RECOMMENDER</h1>
+    <form action="{{url_for('predict')}}" method="post">
+      <table>
+        <tr>
+          <th>Input</th>
+          <th>Value</th>
+        </tr>
+        <tr>
+          <td>Nitrogen:</td>
+          <td><input type="text" id="Nitrogen" name="Nitrogen" required></td>
+        </tr>
+        <tr>
+          <td>Phosphorous:</td>
+          <td><input type="text" id="Phosphorous" name="Phosphorous" required></td>
+        </tr>
+        <tr>
+          <td>Potassium:</td>
+          <td><input type="text" id="Potassium" name="Potassium" required></td>
+        </tr>
+        <tr>
+          <td>Temperature:</td>
+          <td><input type="text" id="Temperature" name="Temperature" required></td>
+        </tr>
+        <tr>
+          <td>Humidity:</td>
+          <td><input type="text" id="Humidity" name="Humidity" required></td>
+        </tr>
+        <tr>
+          <td>PH:</td>
+          <td><input type="text" id="PH" name="PH" required></td>
+        </tr>
+        <tr>
+          <td>Rainfall:</td>
+          <td><input type="text" id="Rainfall" name="Rainfall" required></td>
+        </tr>
+      </table>
+      <button type="submit" id="predictButton">Predict</button>
+    </form>
+    <div id="prediction">Predicted Crop: {{Crop}}</div>
+    
+    <h1>Models used and their respective accuracies:-</h1>
+    <pre id="fileContent" class="filecontent"></pre>
+  
+    <div class="footer">
+      
+      <div class="image-container">
+        <div class="square"></div>
+        <img src="{{ url_for('static', filename='img/about.png') }}" class="about-img" alt="">
+        <div class="social-links">
+            <a href="https://github.com/MohitSaini90" target="_blank"><img src="{{ url_for('static', filename='img/github.png') }}" class="social-img" alt=""></a>
+            <a href="https://www.instagram.com/mitzz07/" target="_blank"><img src="{{ url_for('static', filename='img/insta.png') }}" class="social-img" alt=""></a>
+            <a href="https://www.facebook.com/profile.php?id=100090279665989" target="_blank"><img src="{{ url_for('static', filename='img/fb.png') }}" class="social-img" alt=""></a>
+            <a href="https://twitter.com/Mohitsa42024567" target="_blank"><img src="{{ url_for('static', filename='img/twitter.png') }}" class="social-img" alt=""></a>
+            <a href="https://www.linkedin.com/in/mohit-saini-9112a9213/" target="_blank"><img src="{{ url_for('static', filename='img/linked.png') }}" class="social-img" alt=""></a>
+        </div>
+      </div>
+    </div>
+
+
+      <script>
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "{{ url_for('static', filename='models_accuracy.txt') }}", true);
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            document.getElementById("fileContent").innerText = xhr.responseText;
+          }
+        };
+        xhr.send();
+      </script>
+  </body>
+</html>
